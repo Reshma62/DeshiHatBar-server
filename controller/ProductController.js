@@ -1,12 +1,14 @@
 const Brand = require("../models/brandsModel");
 const Categories = require("../models/categoriesModel");
 const Product = require("../models/productModels");
-
-const mongoose = require("mongoose");
-const ObjectId = mongoose.Types.ObjectId;
-
-const ProductBrandLists = async (req, res) => {};
-const ProductCategoryLists = async (req, res) => {};
+const ProductBrandLists = async (req, res) => {
+  const result = await Brand.find({});
+  res.send(result);
+};
+const ProductCategoryLists = async (req, res) => {
+    const result = await Categories.find({});
+    res.send(result);
+};
 const ProductSliderList = async (req, res) => {};
 const ProductByBrands = async (req, res) => {
   const productId = req?.params?.brand;
@@ -21,7 +23,19 @@ const ProductByBrands = async (req, res) => {
     .populate("categoryID");
   res.send(result);
 };
-const ProductByCategory = async (req, res) => {};
+const ProductByCategory = async (req, res) => {
+  const productId = req?.params?.cateId;
+
+  const result = await Product.find(
+    {
+      categoryID: productId,
+    },
+    { createdAt: 0 }
+  )
+    .populate("categoryID")
+    .populate("brandID");
+  res.send(result);
+};
 const ProductBySimilar = async (req, res) => {};
 const ProductByKeyword = async (req, res) => {};
 const ProductByRemark = async (req, res) => {};
